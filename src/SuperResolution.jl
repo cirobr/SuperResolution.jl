@@ -1,7 +1,7 @@
 module SuperResolution
 
 
-export edsrmodel, EDSRbaseline, EDSRExpanded
+export edsrmodel, EDSRBaseline, EDSRExpanded
 
 import Flux
 import Flux: Chain, SkipConnection, relu, sigmoid, @layer
