@@ -1,0 +1,13 @@
+name = "SuperResolution"
+uuid = "3421342c-53fc-4d84-a0ef-1801cc3d8243"
+authors = ["Ciro B Rosa <ciro.rosa@alumni.usp.br>"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.11"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
