@@ -15,18 +15,17 @@ end
 
 # constructor
 function edsrmodel(
-    ch_in::Int=3,
-    ch_out::Int=3;
-    num_layers::Int=16,     # depth (number of layers) of the body (B in the article)
-    num_features::Int=64,   # number of hidden feature channels (F in the article)
-    scale::Int=2,           # upscale factor
-    residual_scale=1.0f0,   # residual scale factor
-    activation::Function=relu,
+    ch_in::Int=3,                # input channels
+    ch_out::Int=3;               # output channels
+    num_layers::Int=16,          # depth (number of layers) of the body (B in the article)
+    num_features::Int=64,        # number of hidden feature channels (F in the article)
+    scale::Int=2,                # upscale factor
+    residual_scale=1.0f0,        # residual scale factor
+    activation::Function=relu,   # hidden activation function
 )
     @assert scale ∈ (2, 3, 4) || error("Scale must be 2, 3, or 4")
 
     head = ConvK3(ch_in, num_features, activation)
-    tail = ConvK3(num_features, ch_out, activation)
 
     rb = ResidualBlock(
             num_features,
@@ -43,7 +42,9 @@ function edsrmodel(
                scale == 3 ? Upsample3X(num_features, activation=activation) :
                             Upsample4X(num_features, activation=activation)
 
-    return Chain(head, body, upsample, tail, x ->sigmoid.(x))
+    tail = ConvK3(num_features, ch_out, sigmoid)   # sigmoid output activation
+
+    return Chain(h=head, b=body, up=upsample, t=tail)
 end
 
 # Baseline: B=16, F=64, residual_scale=1
