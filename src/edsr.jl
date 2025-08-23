@@ -1,60 +1,65 @@
 # https://arxiv.org/abs/1707.02921
 
-struct ResidualBlock
-    chain::Chain
-    residual_scale
-end
-@layer ResidualBlock trainable=(chain)
+Upsample2X(channels::Int; activation::Function=relu) = 
+    UpsampleBlock(channels, scale=2, activation=activation)
 
-function ResidualBlock(channels::Int; residual_scale)
-    chain = Chain(
-        ConvK3(channels, channels, relu),
-        ConvK3(channels, channels)
-    )
+Upsample3X(channels::Int; activation::Function=relu) = 
+    UpsampleBlock(channels, scale=3, activation=activation)
 
-    return ResidualBlock(chain, residual_scale)
-end
-
-function (m::ResidualBlock)(x)
-    return x .+ m.residual_scale .* m.chain(x)
-end
-
-
-
-function UpsampleBlock(channels::Int, scale::Int)   # check for scale 2,3,4
+function Upsample4X(channels::Int; activation::Function=relu)
     return Chain(
-        ConvK3(channels, channels * scale^2),
-        Flux.PixelShuffle(scale)
+        UpsampleBlock(channels, scale=2, activation=activation),
+        UpsampleBlock(channels, scale=2, activation=activation)
     )
 end
-
-
 
 # constructor
 function edsrmodel(
     ch_in::Int=3,
     ch_out::Int=3;
-    B::Int=16,             # depth (number of layers) of the body
-    F::Int=64,             # width (number of feature channels)
-    scale::Int=2,          # upscale factor
-    residual_scale=1.0f0   # residual scaling factor
+    num_layers::Int=16,     # depth (number of layers) of the body (B in the article)
+    num_features::Int=64,   # number of hidden feature channels (F in the article)
+    scale::Int=2,           # upscale factor
+    residual_scale=1.0f0,   # residual scale factor
+    activation::Function=relu,
 )
-    @assert scale in (2, 3, 4) || error("Scale must be 2, 3, or 4")
+    @assert scale ∈ (2, 3, 4) || error("Scale must be 2, 3, or 4")
 
-    head = ConvK3(ch_in, F)
-    tail = ConvK3(F, ch_out)
+    head = ConvK3(ch_in, num_features, activation)
+    tail = ConvK3(num_features, ch_out, activation)
 
-    rbs  = [ResidualBlock(F, residual_scale=residual_scale) for _ in 1:B]
+    rb = ResidualBlock(
+            num_features,
+            num_features,
+            num_features=num_features,
+            activation=activation,
+            residual_scale=residual_scale
+    )
+    rbs = [rb for _ in 1:num_layers]
     bd   = Chain(rbs...)
     body = SkipConnection(bd, +)
 
-    upsample = UpsampleBlock(F, scale)
+    upsample = scale == 2 ? Upsample2X(num_features, activation=activation) :
+               scale == 3 ? Upsample3X(num_features, activation=activation) :
+                            Upsample4X(num_features, activation=activation)
 
     return Chain(head, body, upsample, tail, x ->sigmoid.(x))
 end
 
 # Baseline: B=16, F=64, residual_scale=1
-EDSRBaseline(scale::Int=2) = edsrmodel(3, 3, B=16, F=64, scale=scale, residual_scale=1.0f0)
+EDSRBaseline(scale::Int=2) = edsrmodel(3, 3,
+                                        num_layers=16,
+                                        num_features=64,
+                                        scale=scale,
+                                        residual_scale=1.0f0,
+                                        activation=leakyrelu
+)
 
 # Expanded: B=32, F=256, residual_scale=0.1
-EDSRExpanded(scale::Int=2) = edsrmodel(3, 3, B=32, F=256, scale=scale, residual_scale=0.1f0)
+EDSRExpanded(scale::Int=2) = edsrmodel(3, 3,
+                                        num_layers=32,
+                                        num_features=256,
+                                        scale=scale,
+                                        residual_scale=0.1f0,
+                                        activation=leakyrelu
+)
