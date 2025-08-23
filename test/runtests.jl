@@ -1,6 +1,7 @@
 using SuperResolution
+using Flux
 using Test
 
 @testset "SuperResolution.jl" begin
-    # Write your tests here.
+    include("edsr_tests.jl")
 end

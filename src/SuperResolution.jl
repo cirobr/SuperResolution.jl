@@ -1,5 +1,13 @@
 module SuperResolution
 
-# Write your package code here.
 
-end
+export edsrmodel, EDSRbaseline, EDSRExpanded
+
+import Flux
+import Flux: Chain, SkipConnection, relu, sigmoid, @layer
+import TinyMachines: ConvK3
+
+include("edsr.jl")
+
+
+end   # module
