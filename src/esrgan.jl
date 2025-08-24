@@ -1,9 +1,9 @@
 # Residual in Residual Dense Block (RRDB)
 function RRDB(ch_in::Int;
-    num_features::Int=64,
-    num_layers::Int=1,
-    residual_scale=0.2f0,
-    activation::Function=relu
+    num_features::Int,
+    num_layers::Int,
+    residual_scale::Float32,
+    activation::Function
 )
     rb = ResidualBlock(ch_in, ch_in,
             num_features   = num_features,
@@ -22,7 +22,7 @@ function esrganmodel(
     ch_out::Int=3;
     num_features::Int=64,
     num_layers::Int=16,
-    β=0.2f0,
+    residual_scale::Float32=0.2f0,
     activation::Function=relu
     )
 
@@ -54,10 +54,11 @@ function esrganmodel(
     return Chain(head, body, upscale, tail, x ->sigmoid.(x))
 end
 
-
-
-# # Example usage:
-# X = rand(Float32, 64,64,3,1)
-# model = esrganmodel(3,3)
-# y = model(X)
-# size(y) == (256,256,3,1)
+ESRGAN() = esrganmodel(
+    3,
+    3,
+    num_features=64,
+    num_layers=16,
+    residual_scale=0.2f0,
+    activation=leakyrelu
+)

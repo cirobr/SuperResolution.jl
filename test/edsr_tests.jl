@@ -11,3 +11,11 @@ y = model(X)
 model = edsrmodel(3, 3, scale=4)
 y = model(X)
 @test size(y) == (256,256,3,1)
+
+model = EDSRBaseline(scale=2)
+y = model(X)
+@test size(y) == (128,128,3,1)
+
+model = EDSRExpanded(scale=2)
+y = model(X)
+@test size(y) == (128,128,3,1)

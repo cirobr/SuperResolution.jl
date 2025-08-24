@@ -1,7 +1,7 @@
 name = "SuperResolution"
 uuid = "3421342c-53fc-4d84-a0ef-1801cc3d8243"
 authors = ["Ciro B Rosa <ciro.rosa@alumni.usp.br>"]
-version = "0.0.1"
+version = "0.0.2"
 
 [deps]
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
