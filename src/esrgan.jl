@@ -9,9 +9,9 @@ function RRDB(ch_in::Int;
             num_features   = num_features,
             activation     = activation,
             residual_scale = residual_scale)
-    skip_rb = SkipConnection(rb, +)
-    skip_rb_vector = [skip_rb for _ in 1:num_layers]
-    chain = Chain(skip_rb_vector..., x -> x .* residual_scale)
+    # skip_rb = SkipConnection(rb, +)
+    rb_vector = [rb for _ in 1:num_layers]
+    chain = Chain(rb_vector..., x -> x .* residual_scale)
 
     return SkipConnection(chain, +)
 end
