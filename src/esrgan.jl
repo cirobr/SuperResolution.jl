@@ -48,10 +48,10 @@ function esrganmodel(
 
     tail = Chain(
         ConvK3(num_features ÷ 4, num_features ÷ 4, activation),
-        ConvK3(num_features ÷ 4, ch_out)
+        ConvK3(num_features ÷ 4, ch_out, sigmoid)   # sigmoid output activation
     )
 
-    return Chain(head, body, upscale, tail, x ->sigmoid.(x))
+    return Chain(h=head, b=body, up=upscale, t=tail)
 end
 
 ESRGAN() = esrganmodel(
