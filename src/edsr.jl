@@ -1,18 +1,5 @@
 # https://arxiv.org/abs/1707.02921
 
-Upsample2X(channels::Int; activation::Function) = 
-    UpsampleBlock(channels, scale=2, activation=activation)
-
-Upsample3X(channels::Int; activation::Function) = 
-    UpsampleBlock(channels, scale=3, activation=activation)
-
-function Upsample4X(channels::Int; activation::Function)
-    return Chain(
-        UpsampleBlock(channels, scale=2, activation=activation),
-        UpsampleBlock(channels, scale=2, activation=activation)
-    )
-end
-
 # constructor
 function edsrmodel(
     ch_in::Int=3,                    # input channels

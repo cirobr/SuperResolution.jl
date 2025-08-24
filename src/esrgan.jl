@@ -28,7 +28,7 @@ function esrganmodel(
 
     @assert num_features % 4 == 0 || error("num_features must be divisible by 4 for PixelShuffle")
     
-    head = ConvK3(ch_in, num_features)
+    head = ConvK3(ch_in, num_features, activation)
 
     body = RRDB(
         num_features,
@@ -38,23 +38,9 @@ function esrganmodel(
         activation=activation
     )
 
-    # 4X upscale
-    # upscale = Chain(
-    #     ConvK3(num_features, num_features, activation),
-    #     Flux.PixelShuffle(2),  # First 2X upscaling, features divided by 2^2
-    #     ConvK3(num_features ÷ 4, num_features, activation),
-    #     Flux.PixelShuffle(2)   # Second 2X upscaling, features divided by 2^2
-    # )
     upscale = Upsample4X(num_features, activation=activation)
 
-    # tail = Chain(
-    #     ConvK3(num_features ÷ 4, num_features ÷ 4, activation),
-    #     ConvK3(num_features ÷ 4, ch_out, sigmoid)   # sigmoid output activation
-    # )
-    tail = Chain(
-        ConvK3(num_features, num_features, activation),
-        ConvK3(num_features, ch_out, sigmoid)   # sigmoid output activation
-    )
+    tail = ConvK3(num_features, ch_out, sigmoid)   # sigmoid output activation
 
     return Chain(h=head, b=body, up=upscale, t=tail)
 end
