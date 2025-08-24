@@ -39,16 +39,21 @@ function esrganmodel(
     )
 
     # 4X upscale
-    upscale = Chain(
-        ConvK3(num_features, num_features, activation),
-        Flux.PixelShuffle(2),  # First 2X upscaling, features divided by 2^2
-        ConvK3(num_features ÷ 4, num_features, activation),
-        Flux.PixelShuffle(2)   # Second 2X upscaling, features divided by 2^2
-    )
+    # upscale = Chain(
+    #     ConvK3(num_features, num_features, activation),
+    #     Flux.PixelShuffle(2),  # First 2X upscaling, features divided by 2^2
+    #     ConvK3(num_features ÷ 4, num_features, activation),
+    #     Flux.PixelShuffle(2)   # Second 2X upscaling, features divided by 2^2
+    # )
+    upscale = Upsample4X(num_features, activation=activation)
 
+    # tail = Chain(
+    #     ConvK3(num_features ÷ 4, num_features ÷ 4, activation),
+    #     ConvK3(num_features ÷ 4, ch_out, sigmoid)   # sigmoid output activation
+    # )
     tail = Chain(
-        ConvK3(num_features ÷ 4, num_features ÷ 4, activation),
-        ConvK3(num_features ÷ 4, ch_out, sigmoid)   # sigmoid output activation
+        ConvK3(num_features, num_features, activation),
+        ConvK3(num_features, ch_out, sigmoid)   # sigmoid output activation
     )
 
     return Chain(h=head, b=body, up=upscale, t=tail)
