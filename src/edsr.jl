@@ -14,15 +14,15 @@ function edsrmodel(
 
     head = ConvK3(ch_in, num_features, activation)
 
-    rb = ResidualBlock(
-            num_features,
-            num_features,
-            num_features=num_features,
-            activation=activation,
-            residual_scale=residual_scale
+    basic_block = ResidualBlock(
+        num_features,
+        num_features,
+        num_features=num_features,
+        activation=activation,
+        residual_scale=residual_scale
     )
-    rbs = [rb for _ in 1:num_layers]
-    bd   = Chain(rbs...)
+    basic_blocks = [basic_block for _ in 1:num_layers]
+    bd   = Chain(basic_blocks...)
     body = Chain(SkipConnection(bd, +), ConvK3(num_features, num_features))
 
     upsample = scale == 2 ? Upsample2X(num_features, activation=activation) :
