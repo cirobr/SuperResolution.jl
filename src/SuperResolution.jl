@@ -10,7 +10,7 @@ import TinyMachines: ConvK3
 
 include("blocks.jl")
 include("edsr.jl")
-include("esrgan.jl")
+include("esrgan-wip.jl")
 
 
 end   # module
