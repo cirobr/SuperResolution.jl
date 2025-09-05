@@ -25,29 +25,6 @@ Credits for the implementations in Julia/Flux go to Ciro B Rosa.
 * LinkedIn: https://www.linkedin.com/in/cirobrosa/
 
 
-## Models
-
-```
-# edsrmodel(3, 3, num_layers=16, num_features=64, scale=scale, residual_scale=1.0f0)
-EDSRBaseline(scale)
-```
-
-```
-# edsrmodel(3, 3, num_layers=32, num_features=256, scale=scale, residual_scale=0.1f0)
-EDSRExpanded(scale)
-```
-
-```
-# esrgan(3, 3, num_features=64, num_layers=32, num_rrdb=16, scale=scale, activation=leakyrelu)
-ESRGANBaseline(scale)
-```
-
-```
-# esrgan(3, 3, num_features=64, num_layers=32, num_rrdb=23, scale=scale, activation=leakyrelu)
-ESRGANExtended(scale)
-```
-
-
 ## Constructors
 
 ```
