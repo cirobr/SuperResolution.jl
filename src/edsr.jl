@@ -22,8 +22,8 @@ function edsrmodel(
         residual_scale=residual_scale
     )
     basic_blocks = [basic_block for _ in 1:num_layers]
-    bd   = Chain(basic_blocks...)
-    body = Chain(SkipConnection(bd, +), ConvK3(num_features, num_features))
+    body_layers  = Chain(basic_blocks...)
+    body = Chain(SkipConnection(body_layers, +), ConvK3(num_features, num_features))
 
     upsample = scale == 2 ? Upsample2X(num_features, activation=activation) :
                scale == 3 ? Upsample3X(num_features, activation=activation) :
