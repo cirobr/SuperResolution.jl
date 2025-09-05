@@ -14,9 +14,8 @@ Upsample2X(channels::Int; activation::Function) =
 Upsample3X(channels::Int; activation::Function) = 
     UpsampleBlock(channels, scale=3, activation=activation)
 
-function Upsample4X(channels::Int; activation::Function)
-    return Chain(
+Upsample4X(channels::Int; activation::Function) =
+    Chain(
         UpsampleBlock(channels, scale=2, activation=activation),
         UpsampleBlock(channels, scale=2, activation=activation)
     )
-end
