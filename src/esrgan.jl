@@ -1,10 +1,11 @@
 # ESRGAN Model
-function esrgan(ch_in::Int=3, ch_out::Int=3;
-                num_features::Int=64,            # RRDB input feature channels
-                num_layers::Int=32,              # growth channels for RDB
-                num_rrdb::Int=16,                # number of RRDB blocks
-                scale::Int=2,                    # upscale factor
-                activation::Function=relu        # hidden activation function
+function esrgan(
+                ch_in::Int, ch_out::Int;     # input/output channels
+                num_features::Int,           # RRDB input feature channels
+                num_layers::Int,             # growth channels for RDB
+                num_rrdb::Int,               # number of RRDB blocks
+                scale::Int,                  # upscale factor
+                activation::Function         # hidden activation function
 )
     @assert scale ∈ (2, 3, 4) || error("Scale must be 2, 3, or 4")
 
@@ -28,18 +29,18 @@ function esrgan(ch_in::Int=3, ch_out::Int=3;
     return Chain(head, body, upsample, tail)
 end
 
-ESRGANBaseline() = esrgan(3, 3,
-                        num_features=64,
-                        num_layers=32,
-                        num_rrdb=16,
-                        scale=2,
-                        activation=leakyrelu
+ESRGANBaseline(;scale=2) = esrgan(3, 3,
+                                num_features=64,
+                                num_layers=32,
+                                num_rrdb=16,
+                                scale=scale,
+                                activation=leakyrelu
 )
 
-ESRGANExtended() = esrgan(3, 3,
-                        num_features=64,
-                        num_layers=32,
-                        num_rrdb=23,
-                        scale=2,
-                        activation=leakyrelu
+ESRGANExtended(;scale=2) = esrgan(3, 3,
+                                num_features=64,
+                                num_layers=32,
+                                num_rrdb=23,
+                                scale=scale,
+                                activation=leakyrelu
 )

@@ -1,13 +1,14 @@
 module SuperResolution
 
 
-export edsrmodel, EDSRBaseline, EDSRExpanded
+export edsr, EDSRBaseline, EDSRExpanded
 export esrgan, ESRGANBaseline, ESRGANExtended
 
 import Flux
 import Flux: Chain, SkipConnection, relu, sigmoid, leakyrelu, @layer
 import TinyMachines: ConvK3
 
+include("upsample_blocks.jl")
 include("edsr_blocks.jl")
 include("esrgan_blocks.jl")
 

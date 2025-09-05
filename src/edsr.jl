@@ -1,14 +1,13 @@
 # https://arxiv.org/abs/1707.02921
 
 # constructor
-function edsrmodel(
-    ch_in::Int=3,                    # input channels
-    ch_out::Int=3;                   # output channels
-    num_layers::Int=16,              # depth (number of layers) of the body (B in the article)
-    num_features::Int=64,            # number of hidden feature channels (F in the article)
-    scale::Int=2,                    # upscale factor
-    residual_scale::Float32=1.0f0,   # residual scale factor
-    activation::Function=relu,       # hidden activation function
+function edsr(
+    ch_in::Int, ch_out::Int;     # input/output channels
+    num_layers::Int,             # depth (number of layers) of the body (B in the article)
+    num_features::Int,           # number of hidden feature channels (F in the article)
+    scale::Int,                  # upscale factor
+    residual_scale::Float32,     # residual scale factor
+    activation::Function,        # hidden activation function
 )
     @assert scale ∈ (2, 3, 4) || error("Scale must be 2, 3, or 4")
 
@@ -36,19 +35,19 @@ function edsrmodel(
 end
 
 # Baseline: B=16, F=64, residual_scale=1
-EDSRBaseline(;scale::Int=2) = edsrmodel(3, 3,
-                                        num_layers=16,
-                                        num_features=64,
-                                        scale=scale,
-                                        residual_scale=1.0f0,
-                                        activation=leakyrelu
+EDSRBaseline(;scale::Int=2) = edsr(3, 3,
+                                num_layers=16,
+                                num_features=64,
+                                scale=scale,
+                                residual_scale=1.0f0,
+                                activation=leakyrelu
 )
 
 # Expanded: B=32, F=256, residual_scale=0.1
-EDSRExpanded(;scale::Int=2) = edsrmodel(3, 3,
-                                        num_layers=32,
-                                        num_features=256,
-                                        scale=scale,
-                                        residual_scale=0.1f0,
-                                        activation=leakyrelu
+EDSRExpanded(;scale::Int=2) = edsr(3, 3,
+                                num_layers=32,
+                                num_features=256,
+                                scale=scale,
+                                residual_scale=0.1f0,
+                                activation=leakyrelu
 )
