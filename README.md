@@ -28,7 +28,7 @@ Credits for the implementations in Julia/Flux go to Ciro B Rosa.
 ## Constructors
 
 ```
-function edsr(
+edsr(
     ch_in::Int, ch_out::Int;     # input/output channels
     num_layers::Int,             # depth (number of layers) of the body (B in the article)
     num_features::Int,           # number of hidden feature channels (F in the article)
