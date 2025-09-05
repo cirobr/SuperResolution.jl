@@ -2,7 +2,7 @@ module SuperResolution
 
 
 export edsrmodel, EDSRBaseline, EDSRExpanded
-export ESRGAN
+export esrgan, ESRGAN
 
 import Flux
 import Flux: Chain, SkipConnection, relu, sigmoid, leakyrelu, @layer

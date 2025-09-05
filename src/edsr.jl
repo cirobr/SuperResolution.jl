@@ -12,6 +12,7 @@ function edsrmodel(
 )
     @assert scale ∈ (2, 3, 4) || error("Scale must be 2, 3, or 4")
 
+    # structure
     head = ConvK3(ch_in, num_features, activation)
 
     basic_block = ResidualBlock(
