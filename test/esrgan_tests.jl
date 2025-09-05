@@ -11,3 +11,11 @@ y = model(X)
 model = esrgan(3, 3)
 y = model(X)
 @test size(y) == (128,128,3,1)
+
+model = ESRGANBaseline()
+y = model(X)
+@test size(y) == (128,128,3,1)
+
+model = ESRGANExtended()
+y = model(X)
+@test size(y) == (128,128,3,1)

@@ -1,8 +1,8 @@
 # ESRGAN Model
 function esrgan(ch_in::Int=3, ch_out::Int=3;
-                num_layers::Int=32,              # growth channels for RDB
                 num_features::Int=64,            # RRDB input feature channels
-                num_rrdb::Int=23,                # number of RRDB blocks
+                num_layers::Int=32,              # growth channels for RDB
+                num_rrdb::Int=16,                # number of RRDB blocks
                 scale::Int=2,                    # upscale factor
                 activation::Function=relu        # hidden activation function
 )
@@ -27,4 +27,19 @@ function esrgan(ch_in::Int=3, ch_out::Int=3;
 
     return Chain(head, body, upsample, tail)
 end
-ESRGAN = esrgan
+
+ESRGANBaseline() = esrgan(3, 3,
+                        num_features=64,
+                        num_layers=32,
+                        num_rrdb=16,
+                        scale=2,
+                        activation=leakyrelu
+)
+
+ESRGANExtended() = esrgan(3, 3,
+                        num_features=64,
+                        num_layers=32,
+                        num_rrdb=23,
+                        scale=2,
+                        activation=leakyrelu
+)
