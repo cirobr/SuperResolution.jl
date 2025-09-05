@@ -1,7 +1,7 @@
 name = "SuperResolution"
 uuid = "3421342c-53fc-4d84-a0ef-1801cc3d8243"
 authors = ["Ciro B Rosa <ciro.rosa@alumni.usp.br>"]
-version = "0.0.2"
+version = "0.0.3"
 
 [deps]
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
@@ -9,7 +9,7 @@ TinyMachines = "5d0fdf5f-995e-4f1b-a9e8-363392c4fe32"
 
 [compat]
 Flux = "0.16.5"
-TinyMachines = "0.3.4"
+TinyMachines = "0.3"
 julia = "1.11"
 
 [extras]

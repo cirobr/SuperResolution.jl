@@ -37,16 +37,37 @@ EDSRBaseline(scale)
 EDSRExpanded(scale)
 ```
 
+```
+# esrgan(3, 3, num_features=64, num_layers=32, num_rrdb=16, scale=scale, activation=leakyrelu)
+ESRGANBaseline(scale)
+```
+
+```
+# esrgan(3, 3, num_features=64, num_layers=32, num_rrdb=23, scale=scale, activation=leakyrelu)
+ESRGANExtended(scale)
+```
+
 
 ## Constructors
 
 ```
-edsrmodel(
-    ch_in,                 # number of input channels (default 3)
-    ch_out;                # number of output channels (default 3)
-    num_layers=16,         # depth (number of layers) of the body (B in the article)
-    num_features=64,       # number of hidden feature channels (F in the article)
-    scale=2,               # upscale factor
-    residual_scale=1.0f0   # residual scaling factor
+function edsr(
+    ch_in::Int, ch_out::Int;     # input/output channels
+    num_layers::Int,             # depth (number of layers) of the body (B in the article)
+    num_features::Int,           # number of hidden feature channels (F in the article)
+    scale::Int,                  # upscale factor
+    residual_scale::Float32,     # residual scale factor
+    activation::Function,        # hidden activation function
+)
+```
+
+```
+esrgan(
+    ch_in::Int, ch_out::Int;     # input/output channels
+    num_features::Int,           # RRDB input feature channels
+    num_layers::Int,             # growth channels for RDB
+    num_rrdb::Int,               # number of RRDB blocks
+    scale::Int,                  # upscale factor
+    activation::Function         # hidden activation function
 )
 ```
