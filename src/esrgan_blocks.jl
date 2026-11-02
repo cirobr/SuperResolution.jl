@@ -8,8 +8,8 @@ function ResidualDenseBlock( ;
             num_layers::Int,         # growth channels for each conv layer
             activation::Function     # activation function
 )
-    front_layers = [ConvK3(num_features + i*num_layers, num_layers, activation) for i in 0:3]  # 4 conv layers
-    final_layer  = ConvK3(num_features + 4*num_layers, num_features)  # final conv layer without activation
+    front_layers = [Conv3(num_features + i*num_layers, num_layers, activation) for i in 0:3]  # 4 conv layers
+    final_layer  = Conv3(num_features + 4*num_layers, num_features)  # final conv layer without activation
     chain = Chain(front_layers..., final_layer)
 
     return ResidualDenseBlock(chain)

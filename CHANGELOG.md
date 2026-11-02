@@ -1,3 +1,6 @@
+### v0.0.4
+* Compat to TinyMachines v0.6
+
 ### v0.0.3
 * ESRGAN added.
 

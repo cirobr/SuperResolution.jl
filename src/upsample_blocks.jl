@@ -1,7 +1,7 @@
 function UpsampleBlock(channels::Int; scale::Int, activation::Function)
     @assert scale ∈ (2:3) || error("Scale must be 2 or 3")
     return Chain(
-        ConvK3(channels, channels * scale^2),
+        Conv3(channels, channels * scale^2),
         Flux.PixelShuffle(scale),
         activation
     )

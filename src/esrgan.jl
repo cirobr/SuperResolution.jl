@@ -10,11 +10,11 @@ function esrgan(
     @assert scale ∈ (2, 3, 4) || error("Scale must be 2, 3, or 4")
 
     # structure
-    head = ConvK3(ch_in, num_features)
+    head = Conv3(ch_in, num_features)
 
     basic_block = RRDB(num_features=num_features, num_layers=num_layers, activation=activation)
     basic_blocks = [basic_block for _ in 1:num_rrdb]
-    body_layers = Chain(basic_blocks..., ConvK3(num_features, num_features))
+    body_layers = Chain(basic_blocks..., Conv3(num_features, num_features))
     body = SkipConnection(body_layers, +)
 
     upsample = scale == 2 ? Upsample2X(num_features, activation=activation) :
@@ -22,8 +22,8 @@ function esrgan(
                             Upsample4X(num_features, activation=activation)
 
     tail = Chain(
-        ConvK3(num_features, num_features, activation),
-        ConvK3(num_features, ch_out, sigmoid)
+        Conv3(num_features, num_features, activation),
+        Conv3(num_features, ch_out, sigmoid)
     )
 
     return Chain(head, body, upsample, tail)

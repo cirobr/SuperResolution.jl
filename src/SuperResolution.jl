@@ -6,7 +6,7 @@ export esrgan, ESRGANBaseline, ESRGANExtended
 
 import Flux
 import Flux: Chain, SkipConnection, relu, sigmoid, leakyrelu, @layer
-import TinyMachines: ConvK3
+import TinyMachines: Conv3
 
 include("upsample_blocks.jl")
 include("edsr_blocks.jl")

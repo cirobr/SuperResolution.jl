@@ -4,8 +4,8 @@ function ResidualBlock(ch_in::Int, ch_out::Int;
     residual_scale::Float32,
 )
     chain = Chain(
-        ConvK3(ch_in, num_features, activation),
-        ConvK3(num_features, ch_out),
+        Conv3(ch_in, num_features, activation),
+        Conv3(num_features, ch_out),
         x -> x .* residual_scale
     )
 
